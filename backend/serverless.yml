@@ -1,0 +1,44 @@
+service:
+  name: serverless-expense--tracker-app
+
+plugins:
+  - serverless-webpack
+  - serverless-iam-roles-per-function
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'ap-south-1'}
+
+  tracing:
+    lambda: true
+    apiGateway: true
+
+  environment:
+    REGION: ${self:provider.region}
+    EXPENSES_TABLE: Todo-${self:provider.stage}
+    INDEX_NAME: Index-${self:provider.stage}
+    IMAGES_S3_BUCKET: serverless-expense-tracker-nkalra0123-adbcdef-${self:provider.stage}
+    SIGNED_URL_EXPIRATION: 300
+
+custom:
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Expense Tracker API
+        description: Serverless application for Expense Tracking
+    models:
+      - name: CreateExpenseRequest
+        contentType: application/json
+        schema: ${file(models/create-expense-request.json)}
+      - name: UpdateExpenseRequest
+        contentType: application/json
+        schema: ${file(models/update-expense-request.json)}
+
+
+functions:
