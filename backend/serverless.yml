@@ -50,6 +50,7 @@ functions:
           method: get
           path: expenses
           cors: true
+          authorizer: Auth
 
     iamRoleStatements:
       - Effect: Allow
@@ -75,6 +76,7 @@ functions:
           method: get
           path: expense/{expenseId}
           cors: true
+          authorizer: Auth
 
     iamRoleStatements:
       - Effect: Allow
@@ -100,6 +102,7 @@ functions:
           method: post
           path: expense
           cors: true
+          authorizer: Auth
           documentation:
             summary: Create a new Expense
             description: Create a new Expense
@@ -127,6 +130,7 @@ functions:
           method: patch
           path: expense/{expenseId}
           cors: true
+          authorizer: Auth
           documentation:
             summary: update an expense
             description: update an expense
@@ -159,6 +163,7 @@ functions:
           method: delete
           path: expense/{expenseId}
           cors: true
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
