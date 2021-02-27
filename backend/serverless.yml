@@ -43,6 +43,9 @@ custom:
 
 functions:
 
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
+
   GetExpenses:
     handler: src/lambda/http/getExpenses.handler
     events:

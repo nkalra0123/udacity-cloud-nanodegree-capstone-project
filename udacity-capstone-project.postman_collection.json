@@ -101,6 +101,76 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "authUrl",
+				"value": "https://{{auth0_domain}}/authorize?audience={{auth0_audience}}\n",
+				"type": "string"
+			},
+			{
+				"key": "tokenType",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "accessToken",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "UPgL6znkTEqAWPP7dnRG88BYmmhuVHDc",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "state",
+				"value": "Some random string of your choosing",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "openid profile email",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "{{auth0_client_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{auth0_client_id}}",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://{{auth0_domain}}/oauth/token",
+				"type": "string"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "https://www.getpostman.com/oauth2/callback",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -125,6 +195,22 @@
 		{
 			"key": "apiHost",
 			"value": "localhost:3000"
+		},
+		{
+			"key": "auth0_domain",
+			"value": "nkalra0123.us.auth0.com"
+		},
+		{
+			"key": "auth0_client_id",
+			"value": "lxUDLMQKgObwPq51WJWpXOCp6phgoDlF"
+		},
+		{
+			"key": "auth0_client_secret",
+			"value": "jnnbh-oMfhMCLxXIeR_StWnmIi_cBPXL3gOiUDrdv5w-1QsJDNhssvz7wIBCmhT4"
+		},
+		{
+			"key": "auth0_audience",
+			"value": "http://express-api/"
 		}
 	]
 }
