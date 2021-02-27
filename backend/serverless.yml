@@ -68,6 +68,31 @@ functions:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.EXPENSES_TABLE}/index/${self:provider.environment.INDEX_NAME}
 
+  GetExpense:
+    handler: src/lambda/http/getExpense.handler
+    events:
+      - http:
+          method: get
+          path: expense/{expenseId}
+          cors: true
+
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.EXPENSES_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.INDEX_NAME}
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.EXPENSES_TABLE}/index/${self:provider.environment.INDEX_NAME}
+
   CreateExpense:
     handler: src/lambda/http/createExpense.handler
     events:
@@ -78,6 +103,8 @@ functions:
           documentation:
             summary: Create a new Expense
             description: Create a new Expense
+            requestModels:
+              'application/json': CreateExpenseRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -92,6 +119,59 @@ functions:
           - dynamodb:PutItem
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.EXPENSES_TABLE}/index/${self:provider.environment.INDEX_NAME}
+
+  UpdateExpense:
+    handler: src/lambda/http/updateExpense.handler
+    events:
+      - http:
+          method: patch
+          path: expense/{expenseId}
+          cors: true
+          documentation:
+            summary: update an expense
+            description: update an expense
+            requestModels:
+              'application/json': UpdateExpenseRequest
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.EXPENSES_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.INDEX_NAME}
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.EXPENSES_TABLE}/index/${self:provider.environment.INDEX_NAME}
+
+  DeleteExpense:
+    handler: src/lambda/http/deleteExpense.handler
+    events:
+      - http:
+          method: delete
+          path: expense/{expenseId}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.EXPENSES_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.INDEX_NAME}
+      - Effect: Allow
+        Action:
+          - s3:DeleteObject
+        Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
 
 resources:
   # TODO: Add any necessary AWS resources
