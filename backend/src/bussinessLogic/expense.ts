@@ -6,7 +6,7 @@ import {UpdateExpenseRequest} from "../requests/UpdateExpenseRequest";
 
 const expenseAccess = new ExpenseAccess();
 
-export async function createExpense(createExpenseRequest: CreateExpenseRequest) : Promise<Expense>{
+export async function createExpense(createExpenseRequest: CreateExpenseRequest, userId: string) : Promise<Expense>{
     const itemId = uuid.v4()
     return await expenseAccess.putExpense({
         description: createExpenseRequest.description,
@@ -14,7 +14,7 @@ export async function createExpense(createExpenseRequest: CreateExpenseRequest) 
         name: createExpenseRequest.name,
         date: createExpenseRequest.date,
         amount:createExpenseRequest.amount,
-        userId: '12',
+        userId: userId,
     })
 }
 

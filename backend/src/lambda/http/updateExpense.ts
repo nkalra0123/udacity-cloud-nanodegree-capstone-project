@@ -5,6 +5,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } f
 import { UpdateExpenseRequest } from '../../requests/UpdateExpenseRequest'
 import {updateExpense} from "../../bussinessLogic/expense";
 import {Expense} from "../../models/Expense";
+import {parseUserId} from "../../auth/utils";
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
@@ -18,7 +19,12 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
         console.log(jwtToken)*/
 
-        const expense : Expense = await updateExpense(updateExpenseRequest, expenseId, "12")
+        const authorization = event.headers.Authorization
+        const split = authorization.split(' ')
+        const jwtToken = split[1]
+        const userId = parseUserId(jwtToken)
+
+        const expense : Expense = await updateExpense(updateExpenseRequest, expenseId, userId)
 
         return {
             statusCode: 200,
