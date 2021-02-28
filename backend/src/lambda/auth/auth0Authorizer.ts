@@ -64,14 +64,13 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   const token = getToken(authHeader)
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
 
-  logger.info(jwt)
+  logger.info('jwt is ' , jwt)
 
   // https://auth0.com/blog/navigating-rs256-and-jwks/
   let cert;
 
   try {
     cert = await Axios.get(jwksUrl)
-    console.log(cert.data);
   } catch (err) {
     // Handle Error Here
     console.error(err);
@@ -84,10 +83,6 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
       ).map(key => {
         return { kid: key.kid, nbf: key.nbf, publicKey: certToPEM(key.x5c[0]) };
       })
-
-  console.log("filtered")
-  console.log(signingKeys)
-  console.log(signingKeys[0].publicKey);
 
   return verify(token, signingKeys[0].publicKey, { algorithms: ['RS256'] }) as JwtPayload
 }

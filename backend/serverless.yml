@@ -7,6 +7,7 @@ plugins:
   - serverless-aws-documentation
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-reqvalidator-plugin
 
 provider:
   name: aws
@@ -33,6 +34,13 @@ custom:
         version: v1.0.0
         title: Expense Tracker API
         description: Serverless application for Expense Tracking
+    models:
+      - name: CreateExpenseRequest
+        contentType: application/json
+        schema: ${file(models/create-expense-request.json)}
+      - name: UpdateExpenseRequest
+        contentType: application/json
+        schema: ${file(models/update-expense-request.json)}
   dynamodb:
     stages:
       - ${self:provider.stage}
@@ -106,6 +114,7 @@ functions:
           path: expense
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
           documentation:
             summary: Create a new Expense
             description: Create a new Expense
@@ -134,6 +143,7 @@ functions:
           path: expense/{expenseId}
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
           documentation:
             summary: update an expense
             description: update an expense
@@ -195,6 +205,14 @@ resources:
         RestApiId:
           Ref: ApiGatewayRestApi
 
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
 
     ExpensesTable:
       Type: AWS::DynamoDB::Table

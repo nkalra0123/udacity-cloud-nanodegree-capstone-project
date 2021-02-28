@@ -5,8 +5,6 @@ import {getAllExpenses} from "../../bussinessLogic/expense";
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
-        console.log('Processing event: ', event)
-
         const authorization = event.headers.Authorization
         const split = authorization.split(' ')
         const jwtToken = split[1]

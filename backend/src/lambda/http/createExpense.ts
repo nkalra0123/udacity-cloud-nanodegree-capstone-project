@@ -8,8 +8,6 @@ import {parseUserId} from "../../auth/utils";
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
-        console.log('Processing event: ', event)
-
         const newExpense: CreateExpenseRequest = JSON.parse(event.body)
         const authorization = event.headers.Authorization
         const split = authorization.split(' ')
