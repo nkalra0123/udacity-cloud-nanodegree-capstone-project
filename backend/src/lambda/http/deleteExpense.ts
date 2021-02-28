@@ -2,9 +2,14 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } f
 
 import {deleteExpense} from "../../bussinessLogic/expense";
 import {parseUserId} from "../../auth/utils";
+import {createLogger} from "../../utils/logger";
+const logger = createLogger('deleteExpense')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
    try {
+
+       logger.info('deleteExpense request received')
+
        const expenseId = event.pathParameters.expenseId
 
        const authorization = event.headers.Authorization
@@ -13,6 +18,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
        const userId = parseUserId(jwtToken)
 
        await deleteExpense(expenseId, userId);
+       logger.info(`deleteExpense successful for ${expenseId}, ${userId}`)
 
        return {
            statusCode: 200,
@@ -23,6 +29,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
        }
    }
    catch(e) {
+       logger.error(`exception ${e}`)
+
        return {
            statusCode: 500,
            headers: {

@@ -34,7 +34,7 @@ export class ExpenseAccess {
     }
 
     async getAllExpenses(userId: string): Promise<Expense[]> {
-        console.log('Getting all groups')
+        console.log('Getting all expenses')
 
         const result = await this.docClient.query({
             TableName: this.expenseTable,
