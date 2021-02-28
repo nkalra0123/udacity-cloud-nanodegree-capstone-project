@@ -2,6 +2,8 @@ import * as AWS  from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import {Expense} from "../models/Expense";
 import {UpdateExpenseRequest} from "../requests/UpdateExpenseRequest";
+import {CreateExpenseRequest} from "../requests/CreateExpenseRequest";
+import * as uuid from 'uuid'
 
 export class ExpenseAccess {
     constructor(
@@ -10,7 +12,19 @@ export class ExpenseAccess {
         private readonly indexTable = process.env.INDEX_TABLE) {
     }
 
-    async putExpense(expense: Expense) : Promise<Expense>{
+    async putExpense(expenseRequest: CreateExpenseRequest, userId : string) : Promise<Expense>{
+
+        const itemId = uuid.v4()
+
+        let expense: Expense = {
+            userId: userId,
+            expenseId: itemId,
+            name: expenseRequest.name,
+            description: expenseRequest.description,
+            date: new Date().toISOString(),
+            amount: expenseRequest.amount,
+        };
+
         await this.docClient.put({
             TableName: this.expenseTable,
             Item: expense
@@ -63,7 +77,7 @@ export class ExpenseAccess {
             UpdateExpression: 'set #namefield = :name, #datefield = :date, description = :description, amount = :amount',
             ExpressionAttributeValues: {
                 ":name": updateExpenseRequest.name,
-                ":date": updateExpenseRequest.date,
+                ":date": new Date().toISOString(),
                 ":description": updateExpenseRequest.description,
                 ":amount": updateExpenseRequest.amount
             },

@@ -1,21 +1,12 @@
 import {CreateExpenseRequest} from "../requests/CreateExpenseRequest";
 import {Expense} from "../models/Expense";
-import * as uuid from 'uuid'
 import {ExpenseAccess} from "../dataLayer/ExpenseAccess";
 import {UpdateExpenseRequest} from "../requests/UpdateExpenseRequest";
 
 const expenseAccess = new ExpenseAccess();
 
 export async function createExpense(createExpenseRequest: CreateExpenseRequest, userId: string) : Promise<Expense>{
-    const itemId = uuid.v4()
-    return await expenseAccess.putExpense({
-        description: createExpenseRequest.description,
-        expenseId: itemId,
-        name: createExpenseRequest.name,
-        date: new Date().toISOString(),
-        amount:createExpenseRequest.amount,
-        userId: userId,
-    })
+    return await expenseAccess.putExpense(createExpenseRequest, userId);
 }
 
 export async function getAllExpenses(userId: string) : Promise<Expense[]>{
