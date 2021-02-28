@@ -22,7 +22,7 @@ provider:
 
   environment:
     REGION: ${self:provider.region}
-    EXPENSES_TABLE: Todo-${self:provider.stage}
+    EXPENSES_TABLE: Expense-${self:provider.stage}
     INDEX_NAME: Index-${self:provider.stage}
     IMAGES_S3_BUCKET: serverless-expense-tracker-nkalra0123-adbcdef-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300

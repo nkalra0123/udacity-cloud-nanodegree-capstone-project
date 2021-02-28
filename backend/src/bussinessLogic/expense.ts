@@ -12,7 +12,7 @@ export async function createExpense(createExpenseRequest: CreateExpenseRequest, 
         description: createExpenseRequest.description,
         expenseId: itemId,
         name: createExpenseRequest.name,
-        date: createExpenseRequest.date,
+        date: new Date().toISOString(),
         amount:createExpenseRequest.amount,
         userId: userId,
     })
@@ -21,7 +21,6 @@ export async function createExpense(createExpenseRequest: CreateExpenseRequest, 
 export async function getAllExpenses(userId: string) : Promise<Expense[]>{
     return await expenseAccess.getAllExpenses(userId);
 }
-
 
 export async function getExpense(expenseId: string, userId: string) : Promise<Expense>{
     return await expenseAccess.getExpensebyId(expenseId, userId);
